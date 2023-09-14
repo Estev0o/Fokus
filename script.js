@@ -4,9 +4,12 @@ const curtoBt = document.querySelector('.app__card-button--curto');
 const longoBt = document.querySelector('.app__card-button--longo');
 const banner = document.querySelector('.app__image');
 const titulo = document.querySelector('.app__title');
+const botoes = document.querySelectorAll('.app__card-button');
 
-focoBt.addEventListener('click', () => {
+focoBt.addEventListener('click', () => 
+{
     alterarContexto('foco')
+    focoBt.classList.add('active')
 });
 
 // focoBt.addEventListener('click', () => {
@@ -14,8 +17,10 @@ focoBt.addEventListener('click', () => {
 //     banner.setAttribute('src', '/imagens/foco.png')
 // });
 
-curtoBt.addEventListener('click', () => {
+curtoBt.addEventListener('click', () => 
+{
     alterarContexto('descanso-curto')
+    curtoBt.classList.add('active')
 });
 
 // curtoBt.addEventListener('click', () => {
@@ -23,8 +28,10 @@ curtoBt.addEventListener('click', () => {
 //     banner.setAttribute('src', '/imagens/descanso-curto.png')
 // });
 
-longoBt.addEventListener('click', () => {
+longoBt.addEventListener('click', () => 
+{
     alterarContexto('descanso-longo')
+    longoBt.classList.add('active')
 });
 
 // longoBt.addEventListener('click', () => {
@@ -32,11 +39,18 @@ longoBt.addEventListener('click', () => {
 //     banner.setAttribute('src', '/imagens/descanso-longo.png')
 // });
 
-function alterarContexto (contexto) {
+function alterarContexto (contexto) 
+{
+    botoes.forEach(function (contexto)
+    {
+        contexto.classList.remove('active')
+    })
+    
     html.setAttribute('data-contexto', contexto)
     banner.setAttribute('src', `/imagens/${contexto}.png`)
 
-    switch (contexto) {
+    switch (contexto) 
+    {
         case "foco":
             titulo.innerHTML = `Otimize sua produtividade,<br>
             <strong class="app__title-strong">mergulhe no que importa.</strong> `
