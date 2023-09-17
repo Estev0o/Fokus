@@ -9,6 +9,10 @@ const musicaFocoInput = document.querySelector('#alternar-musica');
 const musica = new Audio('/sons/luna-rise-part-one.mp3');
 musica.loop = true;
 
+let tempoDecorridoEmSegungos = 5;
+let intervaloId = null;
+const startPauseBt = document.querySelector('#start-pause');
+
 musicaFocoInput.addEventListener('change', () => 
 {
     if (musica.paused) 
@@ -78,4 +82,15 @@ function alterarContexto (contexto)
         default:
             break;
     }
+}
+
+const contagemRegressiva = () => {
+    iniciar();
+    tempoDecorridoEmSegungos -= 1;
+}
+
+startPauseBt.addEventListener('click', contagemRegressiva);
+
+function iniciar() {
+    intervaloId = setInterval(contagemRegressiva, 1000)
 }
