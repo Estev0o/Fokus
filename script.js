@@ -130,4 +130,3 @@ function mostrarTempo (){
     tempoNaTela.innerHTML = `${tempoFormatado}`;
 }
 mostrarTempo()
-
