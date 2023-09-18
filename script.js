@@ -13,9 +13,10 @@ const audioPlay = new Audio('/sons/play.wav');
 const audioPausa = new Audio('/sons/pause.mp3')
 const audioTempoFinalizado = new Audio('/sons/beep.mp3');
 const changeBt = document.querySelector('.app__card-primary-butto-icon');
+const tempoNaTela = document.querySelector('#timer');
 musica.loop = true;
 
-let tempoDecorridoEmSegungos = 5;
+let tempoDecorridoEmSegungos = 1500;
 let intervaloId = null;
 
 musicaFocoInput.addEventListener('change', () => 
@@ -31,7 +32,7 @@ musicaFocoInput.addEventListener('change', () =>
 });
 
 focoBt.addEventListener('click', () => 
-{
+{   tempoDecorridoEmSegungos = 1500;
     alterarContexto('foco')
     focoBt.classList.add('active')
 });
@@ -43,6 +44,7 @@ focoBt.addEventListener('click', () =>
 
 curtoBt.addEventListener('click', () => 
 {
+    tempoDecorridoEmSegungos = 300;
     alterarContexto('descanso-curto')
     curtoBt.classList.add('active')
 });
@@ -54,6 +56,7 @@ curtoBt.addEventListener('click', () =>
 
 longoBt.addEventListener('click', () => 
 {
+    tempoDecorridoEmSegungos = 900;
     alterarContexto('descanso-longo')
     longoBt.classList.add('active')
 });
@@ -65,6 +68,7 @@ longoBt.addEventListener('click', () =>
 
 function alterarContexto (contexto) 
 {
+    mostrarTempo()
     botoes.forEach(function (contexto)
     {
         contexto.classList.remove('active')
@@ -96,6 +100,7 @@ const contagemRegressiva = () => {
         zerar()
     }
     tempoDecorridoEmSegungos -= 1;
+    mostrarTempo();
 }
 
 startPauseBt.addEventListener('click', iniciarOuPausar);
@@ -118,3 +123,11 @@ function zerar() {
     changeBt.setAttribute('src', `/imagens/play_arrow.png`)
     intervaloId = null
 }
+
+function mostrarTempo (){
+    const tempo = new Date(tempoDecorridoEmSegungos * 1000)
+    const tempoFormatado = tempo.toLocaleTimeString('pt-Br', {minute: '2-digit', second: '2-digit'});
+    tempoNaTela.innerHTML = `${tempoFormatado}`;
+}
+mostrarTempo()
+
