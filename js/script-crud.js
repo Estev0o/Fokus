@@ -1,12 +1,18 @@
-const taskListConteiner = document.querySelector('.app__section-task-list');
-const formTask = document.querySelector('.app__form-add-task');
-const toggleFormTaskBtn = document.querySelector('.app__button--add-task');
-const formLabel = document.querySelector('.app__form-label');
-const textArea = document.querySelector('.app__form-textarea');
-const cancelFormTaskBtn = document.querySelector('.app__form-footer__button--cancel')
-const btnCancelar = document.querySelector('.app__form-footer__button--cancel')
+const taskListContainer = document.querySelector('.app__section-task-list')
 
-let tasks = []
+const formTask = document.querySelector('.app__form-add-task')
+const toggleFormTaskBtn = document.querySelector('.app__button--add-task')
+const formLabel = document.querySelector('.app__form-label')
+
+const cancelFormTaskBtn = document.querySelector('.app__form-footer__button--cancel')
+
+const textArea = document.querySelector('.app__form-textarea')
+
+const btnCancelar = document.querySelector('.app__form-footer__button--cancel')
+const localStorageTarefas = localStorage.getItem('tarefas')
+
+
+let tarefas = localStorageTarefas ? JSON.parse(localStorageTarefas) : []
 
 const taskIconSvg = `
 <svg class="app__section-task-icon-status" width="24" height="24" viewBox="0 0 24 24"
@@ -17,45 +23,48 @@ const taskIconSvg = `
         fill="#01080E" />
 </svg>
 `
-
-const clearForm = () => {
-    textArea.value = '';
-    formTask.classList.add('hidden');
+const limparForm = () => {
+    textArea.value = ''
+    formTask.classList.add('hidden')
 }
 
-function createTask(task) {
-    const li = document.createElement('li');
-    li.classList.add('app__section-task-list-item') ;
+function createTask(tarefa) {
+    const li = document.createElement('li')
+    li.classList.add('app__section-task-list-item')
 
-    const svgIcon = document.createElement('svg');
-    svgIcon.innerHTML = taskIconSvg;
+    const svgIcon = document.createElement('svg')
+    svgIcon.innerHTML = taskIconSvg
 
-    const paragraph = document.createElement('p');
+    const paragraph = document.createElement('p')
     paragraph.classList.add('app__section-task-list-item-description')
 
-    paragraph.textContent = task.descricao;
-    li.appendChild(svgIcon);
-    li.appendChild(paragraph);
+    paragraph.textContent = tarefa.descricao
 
-    return li;
+    li.appendChild(svgIcon)
+    li.appendChild(paragraph)
+    
+    return li
 }
 
+tarefas.forEach(task => {
+    const taskItem = createTask(task)
+    taskListContainer.appendChild(taskItem)
+})
 
 cancelFormTaskBtn.addEventListener('click', () => {
     formTask.classList.add('hidden')
 })
 
-btnCancelar.addEventListener('click', clearForm)
-
-tasks.forEach(task => {
-    const taskItem = createTask(task)
-    taskListConteiner.appendChild(taskItem)
-})
+btnCancelar.addEventListener('click', limparForm)
 
 toggleFormTaskBtn.addEventListener('click', () => {
     formLabel.textContent = 'Adicionando tarefa'
     formTask.classList.toggle('hidden')
 })
+
+const upadateLocalStorage = () => {
+    localStorage.setItem('tarefas', JSON.stringify(tarefas))
+}
 
 formTask.addEventListener('submit', (evento) => {
     evento.preventDefault()
@@ -63,9 +72,10 @@ formTask.addEventListener('submit', (evento) => {
         descricao: textArea.value,
         concluida: false
     }
-    tasks.push(task)
+    tarefas.push(task)
     const taskItem = createTask(task)
-    taskListConteiner.appendChild(taskItem) 
+    taskListContainer.appendChild(taskItem)
 
-    clearForm();
+    upadateLocalStorage()
+    limparForm()
 })
